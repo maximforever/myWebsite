@@ -24,7 +24,7 @@ body {
 
 .logo {
     color: #000000;
-    font-size: 6vw;
+    font-size: 4vw;
     font-family: 'Cambay', sans-serif;
     font-weight: 700;
     float: left;
@@ -34,7 +34,7 @@ body {
     padding-top: 2.5%;
     display: inline;
     float: right;
-    font-size: 3vw;
+    font-size: 4vh;
     z-index: 99;
 }
 
@@ -85,28 +85,41 @@ body {
     background: rgba(0, 0, 0, 0.6);
     border-top: 1px solid black;
     min-height: 20vh;
-    padding-top: 5%;
+/*    padding-top: 4vh;*/
     font-weight: 400;
+    margin: 20px;
+}
+
+.menu-section p {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .main .container div {
-    /*border: 1px solid black;*/
-    display: inline-block;    
+/*    border: 1px solid black;*/
+    display: inline-block;   
 }
 
 .blurb {
-    width: 50%;
-    font-size: 1.2vw;
+    max-width: 50%;
+    font-size: 1.5vh;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
+    padding-right: 1%; 
+}
+
+.blurb p {
+    margin-bottom: 3%;
 }
 
 .photo {
-    max-width: 50%;
+    width: 50%;
     float: right;
+    padding-left    : 1%; 
 }
 
 .photo img {
-    height: 70%;
+    width: 100%;
     float: right;
 }
