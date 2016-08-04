@@ -1,0 +1,112 @@
+body {
+    width: 100%;
+    height: 100%;
+}
+
+#landing {
+    z-index: 1;
+}
+
+.blur{ 
+    filter: blur(5px);
+      -webkit-filter: blur(5px);
+      -moz-filter: blur(5px);
+      -o-filter: blur(5px);
+      -ms-filter: blur(5px);
+      
+}
+ 
+
+.header {
+    padding-top: 5%;
+    display: block;
+}
+
+.logo {
+    color: #000000;
+    font-size: 6vw;
+    font-family: 'Cambay', sans-serif;
+    font-weight: 700;
+    float: left;
+}
+
+#toggle{
+    padding-top: 2.5%;
+    display: inline;
+    float: right;
+    font-size: 3vw;
+    z-index: 99;
+}
+
+#toggle:hover{
+    text-shadow: -7px 7px 6px rgba(146, 150, 150, 1);
+}
+
+#close {
+    position: absolute;
+    top: 5%;
+    left: 90%;
+    font-size: 3.5vw;
+    cursor: pointer;
+}
+
+#close:hover{
+    color: rgba(0,0,0, 0.8);
+    text-shadow: -7px 7px 6px rgba(146, 150, 150, 1);
+}
+
+
+#menu{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 20%;
+    z-index: 4;
+    width: 60%;
+    min-height: 100%;
+
+    color: white;
+    font-size: 5vw;
+    text-align: center;
+}
+
+#divider{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 3
+}
+
+.menu-section {
+    background: rgba(0, 0, 0, 0.6);
+    border-top: 1px solid black;
+    min-height: 20vh;
+    padding-top: 5%;
+    font-weight: 400;
+}
+
+.main .container div {
+    /*border: 1px solid black;*/
+    display: inline-block;    
+}
+
+.blurb {
+    width: 50%;
+    font-size: 1.2vw;
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+}
+
+.photo {
+    max-width: 50%;
+    float: right;
+}
+
+.photo img {
+    height: 70%;
+    float: right;
+}
