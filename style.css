@@ -3,6 +3,10 @@ body {
     height: 100%;
 }
 
+a:hover {
+    text-decoration: none;ß
+}
+
 #landing {
     z-index: 1;
 }
@@ -12,14 +16,14 @@ body {
       -webkit-filter: blur(5px);
       -moz-filter: blur(5px);
       -o-filter: blur(5px);
-      -ms-filter: blur(5px);
-      
+      -ms-filter: blur(5px);   
 }
  
 
 .header {
-    padding-top: 5%;
+    padding-top: 5vh;
     display: block;
+    padding-bottom: 1%;
 }
 
 .logo {
@@ -30,13 +34,23 @@ body {
     float: left;
 }
 
-#toggle{
-    padding-top: 2.5%;
+
+/*#toggle{
+    
     display: inline;
     float: right;
-    font-size: 4vh;
+    font-size: 3vw;
+    z-index: 99;
+}*/
+
+#toggle {
+    position: absolute;
+    top: 6vh;
+    left: 86vw;
+    font-size: 3vw;
     z-index: 99;
 }
+
 
 #toggle:hover{
     text-shadow: -7px 7px 6px rgba(146, 150, 150, 1);
@@ -56,19 +70,6 @@ body {
 }
 
 
-#menu{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 20%;
-    z-index: 4;
-    width: 60%;
-    min-height: 100%;
-
-    color: white;
-    font-size: 5vw;
-    text-align: center;
-}
 
 #divider{
     display: none;
@@ -81,20 +82,30 @@ body {
     z-index: 3
 }
 
+#menu{
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 20%;
+    z-index: 4;
+    width: 50%;
+    color: white;
+    font-size: 5vh;
+    text-align: center;
+    margin-top: 10vh;
+}
+
 .menu-section {
     background: rgba(0, 0, 0, 0.6);
     border-top: 1px solid black;
-    min-height: 20vh;
+    border-top: 1px solid black;
+    height: 14vh;
 /*    padding-top: 4vh;*/
     font-weight: 400;
-    margin: 20px;
+    margin: 3vh;
+    padding: 3.5vh;
 }
 
-.menu-section p {
-    position: relative;
-    top: 50%;
-    transform: translateY(-50%);
-}
 
 .main .container div {
 /*    border: 1px solid black;*/
@@ -103,10 +114,10 @@ body {
 
 .blurb {
     max-width: 50%;
-    font-size: 1.5vh;
+    font-size: 1.5vw;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
-    padding-right: 1%; 
+    padding-right: 2%; 
 }
 
 .blurb p {
@@ -116,10 +127,36 @@ body {
 .photo {
     width: 50%;
     float: right;
-    padding-left    : 1%; 
+    padding-left: 2%; 
 }
 
 .photo img {
     width: 100%;
     float: right;
+}
+
+
+@media (max-width: 768px) {
+    .main{
+        display: block;
+        width: 100%;
+    }
+    .main .container div {
+    /*    border: 1px solid black;*/
+        display: block;   
+    }
+    .blurb {
+        font-size: 3.5vw;
+        max-width: 100%;
+        padding: 0;
+    }
+    .photo {
+        width: 100%;
+        padding: 0;
+    }
+    .menu-section {
+        font-size: 4vh;
+        padding: 4vh;
+    }
+
 }
