@@ -33,9 +33,11 @@ function main(){
 
     var containerPadding = $("#content_container").css("padding");
 
-    if ($(window).width() < 960) {
+    if ($(window).width() < 768) {
             console.log("we got small!");
             $('.photo').hide();
+            $('#wide-photo').append("<img src = 'assets/images/profile_wide.jpg' class = 'wide-photo' />")
+            
         }
 
     $(".menu-section").hover(function(){

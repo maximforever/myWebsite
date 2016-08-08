@@ -23,7 +23,6 @@ a:hover {
 .header {
     padding-top: 5vh;
     display: block;
-    padding-bottom: 1%;
 }
 
 .logo {
@@ -32,6 +31,7 @@ a:hover {
     font-family: 'Cambay', sans-serif;
     font-weight: 700;
     float: left;
+    margin-bottom: 0px;
 }
 
 
@@ -114,7 +114,7 @@ a:hover {
 
 .blurb {
     max-width: 50%;
-    font-size: 1.5vw;
+    font-size: 1.4vw;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
     padding-right: 2%; 
@@ -124,15 +124,30 @@ a:hover {
     margin-bottom: 3%;
 }
 
-.photo {
+#photo {
     width: 50%;
     float: right;
     padding-left: 2%; 
 }
 
-.photo img {
+#photo img {
     width: 100%;
     float: right;
+}
+
+.wide-photo{
+    max-width: 100%;
+    margin-bottom: 3vh;
+}
+
+.links{
+    margin-bottom: 5vh;
+    text-align: left;
+}
+
+.links i {
+    padding: 0px 3vw 0px 0px;
+    font-size: 2.5em;
 }
 
 
@@ -150,7 +165,7 @@ a:hover {
         max-width: 100%;
         padding: 0;
     }
-    .photo {
+    #photo {
         width: 100%;
         padding: 0;
     }
@@ -158,5 +173,22 @@ a:hover {
         font-size: 4vh;
         padding: 4vh;
     }
+    .links i {
+        font-size: 2em;
+    }
 
+
+}
+
+@media (max-width: 550px) {
+    .logo {
+        font-size: 8vw;
+    }
+    #toggle{
+        font-size: 7    vw;
+
+    }
+        .links i {
+        font-size: 1.5em;
+    }
 }
