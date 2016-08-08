@@ -27,7 +27,7 @@ a:hover {
 
 .logo {
     color: #000000;
-    font-size: 4vw;
+    font-size: 4.5vw;
     font-family: 'Cambay', sans-serif;
     font-weight: 700;
     float: left;
@@ -146,12 +146,15 @@ a:hover {
 }
 
 .links i {
-    padding: 0px 3vw 0px 0px;
+    margin-right: 7vw;
     font-size: 2.5em;
 }
 
 
 @media (max-width: 768px) {
+    .logo {
+        font-size: 3em;
+    }
     .main{
         display: block;
         width: 100%;
@@ -173,22 +176,22 @@ a:hover {
         font-size: 4vh;
         padding: 4vh;
     }
-    .links i {
-        font-size: 2em;
+    .links{
+        margin-bottom: 2vh;
+        text-align: center;
     }
-
-
-}
-
-@media (max-width: 550px) {
-    .logo {
-        font-size: 8vw;
+    .links i {
+        font-size: 3em;
+        margin: 0px 5vw 0px 5vw;
     }
     #toggle{
-        font-size: 7    vw;
-
+        font-size: 2.5em;
     }
+}
+
+
+@media (max-width: 550px) {
         .links i {
-        font-size: 1.5em;
+        font-size: 2em;
     }
 }
