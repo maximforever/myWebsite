@@ -35,20 +35,18 @@ a:hover {
 }
 
 
-/*#toggle{
-    
-    display: inline;
-    float: right;
-    font-size: 3vw;
-    z-index: 99;
-}*/
+.toggle-div{
+    position: absolute;
+    width: 100vw;
+    top: 6vh; 
+}
 
 #toggle {
-    position: absolute;
-    top: 6vh;
-    left: 86vw;
+/*    position: absolute;
+    top: 6vh;*/
     font-size: 3vw;
     z-index: 99;
+    float: right;
 }
 
 
@@ -88,7 +86,7 @@ a:hover {
     top: 0;
     left: 20%;
     z-index: 4;
-    width: 50%;
+    width: 60%;
     color: white;
     font-size: 5vh;
     text-align: center;
@@ -104,6 +102,8 @@ a:hover {
     font-weight: 400;
     margin: 3vh;
     padding: 3.5vh;
+    margin-right: auto 0px;
+    margin-left: auto 0px;
 }
 
 
@@ -113,8 +113,8 @@ a:hover {
 }
 
 .blurb {
-    max-width: 50%;
-    font-size: 1.4vw;
+    max-width: 70%;
+    font-size: 1.2vw;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
     padding-right: 2%; 
@@ -125,7 +125,7 @@ a:hover {
 }
 
 #photo {
-    width: 50%;
+    width: 30%;
     float: right;
     padding-left: 2%; 
 }
@@ -151,9 +151,9 @@ a:hover {
 }
 
 
-@media (max-width: 768px) {
+@media handheld, screen and (max-width: 768px) {
     .logo {
-        font-size: 3em;
+        font-size: 2.5em;
     }
     .main{
         display: block;
@@ -185,13 +185,25 @@ a:hover {
         margin: 0px 5vw 0px 5vw;
     }
     #toggle{
-        font-size: 2.5em;
+        font-size: 2.2em;
+        padding-right: 15px;
     }
+
+    #menu{
+        width: 80%;
+        left: 10%;
+        font-size: 3vh; 
+    }
+    .menu-section{
+        padding: 4vh;
+    }
+
 }
 
 
-@media (max-width: 550px) {
-        .links i {
+@media handheld, screen and (max-width: 550px) {
+    .links i {
         font-size: 2em;
     }
 }
+
