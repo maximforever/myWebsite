@@ -34,6 +34,10 @@ a:hover {
     margin-bottom: 0px;
 }
 
+.logo a {
+    color: black;
+}
+
 
 .toggle-div{
     position: absolute;
@@ -93,6 +97,14 @@ a:hover {
     margin-top: 10vh;
 }
 
+#menu a{
+    color: white;
+}
+
+#menu a:hover{
+    color: white;
+}
+
 .menu-section {
     background: rgba(0, 0, 0, 0.6);
     border-top: 1px solid black;
@@ -113,7 +125,7 @@ a:hover {
 }
 
 .blurb {
-    max-width: 70%;
+    max-width: 65%;
     font-size: 1.2vw;
     font-family: 'Lato', sans-serif;
     font-weight: 400;
@@ -125,7 +137,7 @@ a:hover {
 }
 
 #photo {
-    width: 30%;
+    width: 35%;
     float: right;
     padding-left: 2%; 
 }
@@ -148,6 +160,87 @@ a:hover {
 .links i {
     margin-right: 7vw;
     font-size: 2.5em;
+}
+
+
+
+/* PROJECT PAGE */
+
+.project-section{
+    /*border: 1px solid black;*/
+    text-align: center;
+    padding: 1vw;
+}
+
+.project-blurb {
+    font-family: 'Lato', sans-serif;
+    font-weight: 400;
+    font-size: 1vw;
+    background-color: rgba(50,50,50, 0.3);
+    padding: 2vw;
+}
+
+.project-section .caption {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    margin: 2vh 0 2vh 0;
+    font-size: 1.3vw;
+}
+
+.project-photo {
+    height: 30vh;
+}
+
+#project-1{
+    background: url("assets/images/theygotfit.jpg") no-repeat center center; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+}
+
+#project-2{
+    background: url("assets/images/hipstercoffeenow.jpg") no-repeat center center; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover
+}
+
+#project-3{
+    background: url("assets/images/bossfight.jpeg") no-repeat center center; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover
+}
+
+
+/* MEDIA QUERIES*/
+
+
+
+@media handheld, screen and (min-width: 992px) {
+/* only desktop*/
+
+    .project-blurb {
+        height: 25%;
+    }
+
+
+}
+
+
+@media handheld, screen and (max-width: 992px) {
+
+
+    .project-blurb {
+        font-size: 2.3vw;
+    }
+
+    .project-section .caption {
+        font-size: 3vw;
+    }
 }
 
 
@@ -205,5 +298,19 @@ a:hover {
     .links i {
         font-size: 2em;
     }
+
+    .project-section .caption {
+        font-size: 1.3em;
+    }
+
+    .project-blurb {
+        font-size: 1em;
+    }
+
+    .project-photo {
+        width: 100%;
+    }
 }
+
+
 

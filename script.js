@@ -43,6 +43,7 @@ function main(){
     $(".menu-section").hover(function(){
         $(this).css("background", "rgba(0, 0, 0, 0.8)");
         $(this).css("color", "#808FFF");
+        $(this).css("color", "#808FFF");
     }, function(){
         $(this).css("background", "rgba(0, 0, 0, 0.6)");
         $(this).css("color", "white");
