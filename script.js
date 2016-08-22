@@ -24,10 +24,7 @@ function main(){
             $("#menu").show();
             $("#landing").css("opacity", "1");
             $("#landing").addClass("blur");
-        }
-
-
-        
+        }        
 
     });
 
@@ -47,6 +44,14 @@ function main(){
     }, function(){
         $(this).css("background", "rgba(0, 0, 0, 0.6)");
         $(this).css("color", "white");
+    });
+
+    $(".project-photo").hover(function(){
+        $(this).parents().next(".project-blurb").css("background", "rgba(50,50,50, 0.5)");
+
+
+    }, function(){
+        $(this).parents().next(".project-blurb").css("background", "rgba(50,50,50, 0.3)");
     });
 
 };

@@ -32,6 +32,7 @@ a:hover {
     font-weight: 700;
     float: left;
     margin-bottom: 0px;
+    z-index: 3;
 }
 
 .logo a {
@@ -175,9 +176,10 @@ a:hover {
 .project-blurb {
     font-family: 'Lato', sans-serif;
     font-weight: 400;
-    font-size: 1vw;
+    font-size: 1.1em;
     background-color: rgba(50,50,50, 0.3);
-    padding: 2vw;
+    padding: 25px;
+    min-height: 200px;
 }
 
 .project-section .caption {
@@ -188,7 +190,7 @@ a:hover {
 }
 
 .project-photo {
-    height: 30vh;
+    height: 250px;
 }
 
 #project-1{
@@ -220,11 +222,11 @@ a:hover {
 
 
 
-@media handheld, screen and (min-width: 992px) {
+@media handheld, screen and (max-width: 1200px) {
 /* only desktop*/
 
-    .project-blurb {
-        height: 25%;
+   .project-blurb {
+        min-height: 220px;
     }
 
 
@@ -308,6 +310,7 @@ a:hover {
     }
 
     .project-photo {
+        height: 150px;
         width: 100%;
     }
 }
