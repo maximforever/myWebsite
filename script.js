@@ -54,4 +54,5 @@ function main(){
         $(this).parents().next(".project-blurb").css("background", "rgba(50,50,50, 0.3)");
     });
 
+
 };
