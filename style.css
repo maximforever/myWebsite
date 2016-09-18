@@ -206,7 +206,7 @@ a:hover {
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
-      background-size: cover
+      background-size: cover;
 }
 
 #project-3{
@@ -214,7 +214,15 @@ a:hover {
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
-      background-size: cover
+      background-size: cover;
+}
+
+#project-4{
+    background: url("assets/images/exercises.jpg") no-repeat center center; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
 }
 
 
