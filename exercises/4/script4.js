@@ -6,25 +6,34 @@ function main(){
     $("#status").append("ready to go!");
 
     var canvas = $("#canvas");
-    var dx = randBetween(-3.5, 3.5);
-    var dy = randBetween(-3.5, 3.5);
+    var SPEED = 3;
 
-    //Canvas fix for mobile:
+    var dx = randBetween(-SPEED, SPEED);
+    var dy = randBetween(-SPEED, SPEED);
+
+
+    var ctx;
+    var MINRAD = 30;
+    var MAXRAD = 50
+
+        //Canvas fix for mobile:
     
     if($(window).width()<720){
         canvas.attr('width', '300');
         canvas.attr('height', '168.75');
         dx = randBetween(-3, 3);
         dy = randBetween(-3, 3);
+        MINRAD = 5;
+        MAXRAD = 15
+        SPEED = 1;
         $("#status").append("<br>we're on mobile");
     }
 
-
-    var ctx;
-    var WIDTH = canvas.width();
-    var HEIGHT = canvas.height();
     var x = WIDTH/2;
     var y = HEIGHT/2;
+    var WIDTH = canvas.width();
+    var HEIGHT = canvas.height();
+
 
     var circles = [];
 
@@ -57,11 +66,16 @@ function main(){
     }
 
     function init(){
+
+        $("#status").append("<br>Distance: ");
+
         ctx = $("#canvas")[0].getContext("2d");
 
+        // This is the bit that makes cicles:
 
         for(i = 0; i < 5; i++){
-            c = makeCircle();
+
+            c = makeCircle();            
             circles.push(c);
         }
 
@@ -71,7 +85,7 @@ function main(){
 
     function makeCircle(){
 
-        c = new Circle(randBetween(0, WIDTH), randBetween(0, HEIGHT), randBetween(15, 25), randBetween(-3, 3), randBetween(-3, 3));
+        c = new Circle(randBetween(MAXRAD, WIDTH-MAXRAD), randBetween(MAXRAD, HEIGHT-MAXRAD), randBetween(MINRAD, MAXRAD), randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
         return c;
     }
 
@@ -79,25 +93,14 @@ function main(){
 
         clear();
 
+        checkForBounce();
+
         for(i = 0; i < circles.length; i++){
             drawCircle(circles[i]);
         }
 
-
-/*        if ((x + dx) > (WIDTH - 10) || (x + dx) < 10){
-            dx = -dx * randBetween(0.6, 1.4);
-            dy = dy * randBetween(0.6, 1.4);
-            bouncePing();
-        }
-
-        if((y + dy) > (HEIGHT-10) || (y + dy) < 10){
-            dy = -dy * randBetween(0.6, 1.4);
-            dx = dx * randBetween(0.6, 1.4);
-            bouncePing();
-        }*/
-
-        x += dx;
-        y += dy;
+        
+    
     }
 
     function drawCircle(circle){
@@ -109,15 +112,18 @@ function main(){
         ctx.fill();
         ctx.stroke();
 
+/// -------- ???
+
+
         if ((circle.xPos + dx) > (WIDTH - circle.radius) || (circle.xPos + circle.dx) <= circle.radius){
-            circle.dx = -circle.dx * randBetween(0.6, 1.4);
-            circle.dy *= randBetween(0.6, 1.4);
+            circle.dx = -circle.dx;
+            circle.dy *= randBetween(0.5, 1.5);
             bouncePing();
         }
 
         if((circle.yPos + dy) > (HEIGHT-circle.radius) || (circle.yPos + circle.dy) <= circle.radius){
-            circle.dy = -circle.dy * randBetween(0.6, 1.4);
-            circle.dx *= randBetween(0.6, 1.4);
+            circle.dy = -circle.dy;
+            circle.dx *= randBetween(0.5, 1.5);
             bouncePing();
         }
 
@@ -149,6 +155,40 @@ function main(){
         this.radius = radius;
         this.dx = dx;
         this.dy = dy;
+    }
+
+    function getDistance(a, b){
+
+        d = Math.sqrt(Math.pow((b.xPos - a.xPos), 2) + Math.pow((b.yPos - a.yPos),2));
+        
+        return d;
+    }
+
+    function checkForBounce(){
+
+        for(i = 0; i < circles.length; i++){
+            for(j = 0; j < circles.length; j++){
+
+                d = getDistance(circles[i], circles[j]);
+
+                if(d != 0){
+                    
+                    future_a = Math.sqrt(Math.pow(circles[i].dx, 2) + Math.pow(circles[i].dy, 2));
+
+
+                    if((circles[i].radius + future_a + circles[j].radius) >= d){
+
+                        console.log("COLLIDING!");
+                        
+                        circles[i].dx = -circles[i].dx;
+                        circles[i].dy = -circles[i].dy;
+                        /*circles[j].dx = -circles[j].dx;
+                        circles[j].dy = -circles[j].dy;*/
+
+                    }
+                }  
+            }   
+        }
     }
 
 
