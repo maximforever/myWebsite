@@ -13,8 +13,9 @@ function main(){
 
 
     var ctx;
-    var MINRAD = 30;
-    var MAXRAD = 50
+    var MINRAD = 15;
+    var MAXRAD = 30;
+    var NUM_CIRCLES = 5;
 
         //Canvas fix for mobile:
     
@@ -73,7 +74,7 @@ function main(){
 
         // This is the bit that makes cicles:
 
-        for(i = 0; i < 5; i++){
+        for(i = 0; i < NUM_CIRCLES; i++){
 
             c = makeCircle();            
             circles.push(c);
@@ -182,9 +183,6 @@ function main(){
                         
                         circles[i].dx = -circles[i].dx;
                         circles[i].dy = -circles[i].dy;
-                        /*circles[j].dx = -circles[j].dx;
-                        circles[j].dy = -circles[j].dy;*/
-
                     }
                 }  
             }   
