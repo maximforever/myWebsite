@@ -11,19 +11,21 @@ function main(){
     var dx = randBetween(-SPEED, SPEED);
     var dy = randBetween(-SPEED, SPEED);
 
-
     var ctx;
     var MINRAD = 15;
     var MAXRAD = 30;
     var NUM_CIRCLES = 5;
 
-        //Canvas fix for mobile:
+    var circles = [];
+    var mute = true;
+
+    //Canvas fix for mobile:
     
     if($(window).width()<720){
         canvas.attr('width', '300');
         canvas.attr('height', '168.75');
-        dx = randBetween(-3, 3);
-        dy = randBetween(-3, 3);
+        dx = randBetween(-SPEED/3, SPEED/3);
+        dy = randBetween(-SPEED/3, SPEED/3);
         MINRAD = 5;
         MAXRAD = 15
         SPEED = 1;
@@ -36,10 +38,7 @@ function main(){
     var HEIGHT = canvas.height();
 
 
-    var circles = [];
-
-    var mute = true;
-
+    // Status display:
 
     $("#mute").click(function(){
         if(mute){
@@ -66,26 +65,47 @@ function main(){
       $("#status").append("<br>canvas is broken :( ");
     }
 
+// ------------------------------
+//     START BUILDING CANVAS HERE
+// ------------------------------
+
     function init(){
-
-        $("#status").append("<br>Distance: ");
-
         ctx = $("#canvas")[0].getContext("2d");
+
+        var placed;
 
         // This is the bit that makes cicles:
 
         for(i = 0; i < NUM_CIRCLES; i++){
+            
+            do {
+                var c = makeCircle();  
+                placed = true;          
 
-            c = makeCircle();            
+                // let's make sure this circle doesn't overlap with any other circle
+
+                for(i = 0; i < circles.length; i++){
+      
+                    var d = getDistance(circles[i], c);
+                    console.log("testing for circle: " + i);
+                    if(d < (circles[i].radius + c.radius + 10)){
+                    
+                        placed = false;
+                        console.log("overlapping with something");
+                    }
+                    
+                }
+            }while(!placed)
+
+            console.log("placed a circle!");
             circles.push(c);
-        }
 
+        }
 
         return setInterval(draw, 10)
     }
 
     function makeCircle(){
-
         c = new Circle(randBetween(MAXRAD, WIDTH-MAXRAD), randBetween(MAXRAD, HEIGHT-MAXRAD), randBetween(MINRAD, MAXRAD), randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
         return c;
     }
@@ -161,7 +181,6 @@ function main(){
     function getDistance(a, b){
 
         d = Math.sqrt(Math.pow((b.xPos - a.xPos), 2) + Math.pow((b.yPos - a.yPos),2));
-        
         return d;
     }
 
@@ -183,6 +202,7 @@ function main(){
                         
                         circles[i].dx = -circles[i].dx;
                         circles[i].dy = -circles[i].dy;
+
                     }
                 }  
             }   
