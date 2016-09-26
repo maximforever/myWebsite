@@ -12,8 +12,8 @@ function main(){
     var dy = randBetween(-SPEED, SPEED);
 
     var ctx;
-    var MINRAD = 15;
-    var MAXRAD = 30;
+    var MINRAD = 25;
+    var MAXRAD = 50;
     var NUM_CIRCLES = 5;
 
     var circles = [];
@@ -24,8 +24,8 @@ function main(){
     if($(window).width()<720){
         canvas.attr('width', '300');
         canvas.attr('height', '168.75');
-        dx = randBetween(-SPEED/3, SPEED/3);
-        dy = randBetween(-SPEED/3, SPEED/3);
+        dx = randBetween(-SPEED/5, SPEED/5);
+        dy = randBetween(-SPEED/5, SPEED/5);
         MINRAD = 5;
         MAXRAD = 15
         SPEED = 1;
@@ -87,17 +87,14 @@ function main(){
                 for(i = 0; i < circles.length; i++){
       
                     var d = getDistance(circles[i], c);
-                    console.log("testing for circle: " + i);
                     if(d < (circles[i].radius + c.radius + 10)){
                     
                         placed = false;
-                        console.log("overlapping with something");
                     }
                     
                 }
             }while(!placed)
 
-            console.log("placed a circle!");
             circles.push(c);
 
         }
@@ -136,13 +133,13 @@ function main(){
 /// -------- ???
 
 
-        if ((circle.xPos + dx) > (WIDTH - circle.radius) || (circle.xPos + circle.dx) <= circle.radius){
+        if ((circle.xPos + circle.dx) > (WIDTH - circle.radius) || (circle.xPos + circle.dx) <= circle.radius){
             circle.dx = -circle.dx;
             circle.dy *= randBetween(0.5, 1.5);
             bouncePing();
         }
 
-        if((circle.yPos + dy) > (HEIGHT-circle.radius) || (circle.yPos + circle.dy) <= circle.radius){
+        if((circle.yPos + circle.dy) > (HEIGHT -  circle.radius) || (circle.yPos + circle.dy) <= circle.radius){
             circle.dy = -circle.dy;
             circle.dx *= randBetween(0.5, 1.5);
             bouncePing();
@@ -176,6 +173,7 @@ function main(){
         this.radius = radius;
         this.dx = dx;
         this.dy = dy;
+
     }
 
     function getDistance(a, b){
@@ -191,10 +189,9 @@ function main(){
 
                 d = getDistance(circles[i], circles[j]);
 
-                if(d != 0){
+                if(d != 0 ){
                     
-                    future_a = Math.sqrt(Math.pow(circles[i].dx, 2) + Math.pow(circles[i].dy, 2));
-
+                    var future_a = Math.sqrt(Math.pow(circles[i].dx, 2) + Math.pow(circles[i].dy, 2));
 
                     if((circles[i].radius + future_a + circles[j].radius) >= d){
 
@@ -203,10 +200,14 @@ function main(){
                         circles[i].dx = -circles[i].dx;
                         circles[i].dy = -circles[i].dy;
 
+
                     }
                 }  
             }   
         }
+
+
+
     }
 
 
