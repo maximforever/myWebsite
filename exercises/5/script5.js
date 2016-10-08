@@ -10,9 +10,9 @@ function main(){
     var dx = randBetween(-SPEED, SPEED);
     var dy = randBetween(-SPEED, SPEED);
     var ctx;
-    var MINRAD = 5;
-    var MAXRAD = 5;
-    var NUM_CIRCLES = 50;
+    var MINRAD = 1;
+    var MAXRAD = 2;
+    var NUM_CIRCLES = 100;
     var x = WIDTH/2;
     var y = HEIGHT/2;
     var WIDTH = canvas.width();
@@ -26,6 +26,7 @@ function main(){
 
     var left_offset = 0;
     var top_offset = 0; 
+    var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
     
     if (canvas[0].getContext){
         var ctx = canvas[0].getContext('2d');
@@ -105,7 +106,9 @@ function main(){
         $("#y-pos").text(top_offset);
 
         for(i = 0; i < circles.length; i++){
-            drawCircle(circles[i]);
+            if(!((circle.xPos - left_offset)<0 || (circle.xPos - left_offset)>WIDTH || (circle.yPos - top_offset) < 0 || (circle.yPos - top_offset) > HEIGHT)){
+                drawCircle(circles[i]);
+            }
         }
 
         
@@ -113,13 +116,37 @@ function main(){
     }
 
     function drawCircle(circle){
-        ctx.fillStyle = "rgba(249, 250, 238, 0.7)";
-        ctx.stokeStyle = "rgba(178, 181, 148, 1)";
+
+
+    /* Very pretty color shift effect: */
+
+    // var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
+    // ctx.fillStyle = colors[Math.floor(randBetween(0,3))];
+
+
+
+
+    /* LIGHT TWINKLE: */
+
+        if(randBetween(0,3)>2.98){
+
+
+            circle.color = colors[Math.floor(randBetween(0,3))];
+        }
+        
+
+
+        ctx.fillStyle = circle.color;
+
+
+
+
+        // ctx.stokeStyle = "rgba(178, 181, 148, 1)";
         ctx.beginPath();
         ctx.arc(circle.xPos - left_offset, circle.yPos - top_offset, circle.radius, 0, Math.PI*2, true);         // start at 0, end at Math.PI*2
         ctx.closePath();
         ctx.fill();
-        //ctx.stroke();
+        // ctx.stroke();
 
         if ((circle.xPos + dx) > (WIDTH - circle.radius) || (circle.xPos + circle.dx) <= circle.radius){
             circle.dx = -circle.dx;
@@ -130,7 +157,7 @@ function main(){
             circle.dy = -circle.dy;
             circle.dx *= randBetween(0.5, 1.5);
         }
-
+        
 
 /*
         circle.xPos += circle.dx;
@@ -138,11 +165,14 @@ function main(){
     }
 
     function Circle(x, y, radius, dx, dy){
+        
+
         this.xPos = x;
         this.yPos = y;
         this.radius = radius;
         this.dx = dx;
         this.dy = dy;
+        this.color = colors[Math.floor(randBetween(0,3))];
     }
 
     function getDistance(a, b){
@@ -219,7 +249,7 @@ function main(){
             if(e.which == 40){
                 console.log("down");
                 if(top_offset < (MAP_HEIGHT-HEIGHT)){
-                    $("#-pos").css("color", "black");
+                    $("#y-pos").css("color", "black");
                     $("#canvas").css("border-top", "3px solid #201E28");
                     $("#canvas").css("border-bottom", "3px solid #201E28");
                     top_offset += 5;
