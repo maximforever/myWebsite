@@ -13,6 +13,21 @@ function main(){
     var MINRAD = 1;
     var MAXRAD = 2;
     var NUM_CIRCLES = 100;
+
+    var MAP_HEIGHT = 800;
+    var MAP_WIDTH = 1400;
+
+    //Canvas fix for mobile:
+    
+    if($(window).width()<720){
+        canvas.attr('width', window.innerWidth);
+        canvas.attr('height', window.innerHeight);
+        NUM_CIRCLES = 1000;
+        dx = randBetween(-SPEED/5, SPEED/5);
+        dy = randBetween(-SPEED/5, SPEED/5);
+        $("#status").append("<br>we're on mobile");
+    }
+
     var x = WIDTH/2;
     var y = HEIGHT/2;
     var WIDTH = canvas.width();
@@ -20,8 +35,7 @@ function main(){
     var circles = [];
     var mute = true;
 
-    MAP_HEIGHT = 800;
-    MAP_WIDTH = 1400;
+
 
 
     var left_offset = 0;
@@ -70,19 +84,10 @@ function main(){
             }while(!placed)
 
             circles.push(c);
-
             $("#count").text("Count: " + circles.length);
         }   
 
-    /*       
-        
-        a = new Circle(100, 100, 10, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
-        b = new Circle(200, 100, 10, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
-        c = new Circle(300, 100, 10, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
-        d = new Circle(1000, 600, 10, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
-        circles.push(a, b, c, d);
 
-    */
         $("#count").text("Count: " + circles.length);
     
 
@@ -128,9 +133,7 @@ function main(){
 
     /* LIGHT TWINKLE: */
 
-        if(randBetween(0,3)>2.98){
-
-
+        if(randBetween(0,3) > 2.98){
             circle.color = colors[Math.floor(randBetween(0,3))];
         }
         
@@ -198,26 +201,116 @@ function main(){
         ctx.clearRect(0, 0, WIDTH, HEIGHT);
     }
 
+    // listen to button events:
+    // this is way smoother than mouse events - need to understand why!
+
+
+    var timeout;
+
+    $("#move-left").mousedown(function(){
+        timeout = setInterval(function(){
+            move("left");
+        }, 50);
+        return false;
+    });
+
+    $("#move-up").mousedown(function(){
+        timeout = setInterval(function(){
+            move("up");
+        }, 50);
+        return false;
+    });
+
+    $("#move-right").mousedown(function(){
+        timeout = setInterval(function(){
+            move("right");
+        }, 50);
+        return false;
+    });
+
+    $("#move-down").mousedown(function(){
+        timeout = setInterval(function(){
+            move("down");
+        }, 50);
+        return false;
+    });
+
+    $(document).mouseup(function(){
+        clearInterval(timeout);
+        return false;
+    });
+//
+
+    var keyState = {};    
+        window.addEventListener('keydown',function(e){
+            keyState[e.keyCode || e.which] = true;
+        },true);    
+        window.addEventListener('keyup',function(e){
+            keyState[e.keyCode || e.which] = false;
+        },true);
+
+        x = 100;
+
+        function gameLoop() {
+            if (keyState[37] || keyState[65]){
+                x -= 1;
+            }    
+            if (keyState[39] || keyState[68]){
+                x += 1;
+            }
+
+            // redraw/reposition your object here
+            // also redraw/animate any objects not controlled by the user
+
+            setTimeout(gameLoop, 10);
+        }
+//
+
+
+
     // listen to keyboard events:
 
-        $(window).keydown(function(e){
+    $(window).keydown(function(e){
 
-            if(e.which == 37){
-                console.log("left");
+        switch(e.which){
+            case 37:
+                move("left"); 
+                break;
+            case 38:
+                move("up"); 
+                break;
+            case 39:
+                move("right"); 
+                break;
+            case 40:
+                move("down"); 
+                break;
+            default:
+                console.log("something broke :(");
+                break;
+        }
+   
+    });
+
+    function move(dir){
+        switch(dir) {
+            case "left":
+
                 if(left_offset > 0){
                     $("#x-pos").css("color", "black");
-                    $("#canvas").css("border-left", "3px solid #201E28");
                     $("#canvas").css("border-right", "3px solid #201E28");
+                    $("#canvas").css("border-left", "3px solid #201E28");
                     left_offset -= 5;
                 } else {
                     console.log("nowehere to go, left_offset is " + left_offset);
                     $("#x-pos").css("color", "red");
                     $("#canvas").css("border-left", "3px solid #8971FF");
-                }   
-            }
 
-            if(e.which == 38){
-                console.log("up");
+                } 
+                break;
+
+
+            case "up":
                 if(top_offset > 0){
                     $("#y-pos").css("color", "black");
                     $("#canvas").css("border-top", "3px solid #201E28");
@@ -227,12 +320,13 @@ function main(){
                     console.log("nowehere to go, top_offset is " + left_offset);
                     $("#y-pos").css("color", "red");
                     $("#canvas").css("border-top", "3px solid #8971FF");
-                } 
-                
-            }
 
-            if(e.which == 39){
-                console.log("right");
+                } 
+
+                break;
+
+
+            case "right":
                 if(left_offset < (MAP_WIDTH-WIDTH)){
                     $("#x-pos").css("color", "black");
                     $("#canvas").css("border-right", "3px solid #201E28");
@@ -242,12 +336,12 @@ function main(){
                     console.log("nowehere to go, left_offset is " + left_offset);
                     $("#x-pos").css("color", "red");
                     $("#canvas").css("border-right", "3px solid #8971FF");
-
                 } 
-            }
 
-            if(e.which == 40){
-                console.log("down");
+                break;
+
+
+            case "down":
                 if(top_offset < (MAP_HEIGHT-HEIGHT)){
                     $("#y-pos").css("color", "black");
                     $("#canvas").css("border-top", "3px solid #201E28");
@@ -259,9 +353,13 @@ function main(){
                     $("#canvas").css("border-bottom", "3px solid #8971FF");
 
                 } 
-            }
-       
-        });
+                break;
+
+            default:
+                console.log("something broke :( ");
+        }
+    }
+
 
 // END LIBRARY CODE
 
