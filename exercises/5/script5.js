@@ -12,7 +12,7 @@ function main(){
     var ctx;
     var MINRAD = 1;
     var MAXRAD = 2;
-    var NUM_CIRCLES = 100;
+    var NUM_CIRCLES = 2000;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -35,13 +35,23 @@ function main(){
     var circles = [];
     var mute = true;
 
-
-
-
     var left_offset = 0;
     var top_offset = 0; 
     var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
     
+
+
+
+    var keyState = {};    
+    
+    window.addEventListener('keydown',function(e){
+        keyState[e.which] = true;
+    },true);    
+    window.addEventListener('keyup',function(e){
+        keyState[e.which] = false;
+    },true);
+
+
     if (canvas[0].getContext){
         var ctx = canvas[0].getContext('2d');
         $("#status").append("<br>width: " + canvas.width());
@@ -89,8 +99,6 @@ function main(){
 
 
         $("#count").text("Count: " + circles.length);
-    
-
 
         return setInterval(draw, 10)
     }
@@ -106,6 +114,7 @@ function main(){
 
 
         clear();
+        moveLoop();
 
         $("#x-pos").text(left_offset);
         $("#y-pos").text(top_offset);
@@ -239,58 +248,33 @@ function main(){
         clearInterval(timeout);
         return false;
     });
-//
 
-    var keyState = {};    
-        window.addEventListener('keydown',function(e){
-            keyState[e.keyCode || e.which] = true;
-        },true);    
-        window.addEventListener('keyup',function(e){
-            keyState[e.keyCode || e.which] = false;
-        },true);
 
-        x = 100;
 
-        function gameLoop() {
-            if (keyState[37] || keyState[65]){
-                x -= 1;
-            }    
-            if (keyState[39] || keyState[68]){
-                x += 1;
-            }
-
-            // redraw/reposition your object here
-            // also redraw/animate any objects not controlled by the user
-
-            setTimeout(gameLoop, 10);
-        }
 //
 
 
 
     // listen to keyboard events:
 
-    $(window).keydown(function(e){
-
-        switch(e.which){
-            case 37:
+    function moveLoop() {
+  
+            if (keyState[37]){
                 move("left"); 
-                break;
-            case 38:
+            }
+                
+            if(keyState[38]){
                 move("up"); 
-                break;
-            case 39:
-                move("right"); 
-                break;
-            case 40:
+            }
+
+            if(keyState[39]){
+                move("right");
+            }
+
+            if(keyState[40]){
                 move("down"); 
-                break;
-            default:
-                console.log("something broke :(");
-                break;
-        }
-   
-    });
+            }
+    }
 
     function move(dir){
         switch(dir) {
