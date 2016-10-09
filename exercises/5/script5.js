@@ -12,7 +12,7 @@ function main(){
     var ctx;
     var MINRAD = 1;
     var MAXRAD = 2;
-    var NUM_CIRCLES = 2000;
+    var NUM_CIRCLES = 600;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -219,28 +219,28 @@ function main(){
     $("#move-left").mousedown(function(){
         timeout = setInterval(function(){
             move("left");
-        }, 50);
+        }, 10);
         return false;
     });
 
     $("#move-up").mousedown(function(){
         timeout = setInterval(function(){
             move("up");
-        }, 50);
+        }, 10);
         return false;
     });
 
     $("#move-right").mousedown(function(){
         timeout = setInterval(function(){
             move("right");
-        }, 50);
+        }, 10);
         return false;
     });
 
     $("#move-down").mousedown(function(){
         timeout = setInterval(function(){
             move("down");
-        }, 50);
+        }, 10);
         return false;
     });
 
@@ -284,7 +284,7 @@ function main(){
                     $("#x-pos").css("color", "black");
                     $("#canvas").css("border-right", "3px solid #201E28");
                     $("#canvas").css("border-left", "3px solid #201E28");
-                    left_offset -= 5;
+                    left_offset -= 2;
                 } else {
                     console.log("nowehere to go, left_offset is " + left_offset);
                     $("#x-pos").css("color", "red");
@@ -299,7 +299,7 @@ function main(){
                     $("#y-pos").css("color", "black");
                     $("#canvas").css("border-top", "3px solid #201E28");
                     $("#canvas").css("border-bottom", "3px solid #201E28");
-                    top_offset -= 5;
+                    top_offset -= 2;
                 } else {
                     console.log("nowehere to go, top_offset is " + left_offset);
                     $("#y-pos").css("color", "red");
@@ -315,7 +315,7 @@ function main(){
                     $("#x-pos").css("color", "black");
                     $("#canvas").css("border-right", "3px solid #201E28");
                     $("#canvas").css("border-left", "3px solid #201E28");
-                    left_offset += 5;
+                    left_offset += 2;
                 } else {
                     console.log("nowehere to go, left_offset is " + left_offset);
                     $("#x-pos").css("color", "red");
@@ -330,7 +330,7 @@ function main(){
                     $("#y-pos").css("color", "black");
                     $("#canvas").css("border-top", "3px solid #201E28");
                     $("#canvas").css("border-bottom", "3px solid #201E28");
-                    top_offset += 5;
+                    top_offset += 2;
                 } else {
                     console.log("nowehere to go, top_offset is " + left_offset);
                     $("#y-pos").css("color", "red");
