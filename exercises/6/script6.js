@@ -10,8 +10,8 @@ function main(){
     var dx = randBetween(-SPEED, SPEED);
     var dy = randBetween(-SPEED, SPEED);
     var ctx;
-    var RADIUS = 20;
-    var NUM_CIRCLES = 50;
+    var RADIUS = 30;
+    var NUM_CIRCLES = 20;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -31,6 +31,7 @@ function main(){
     var x = WIDTH/2;
     var y = HEIGHT/2;
     var circles = [];
+    var visibleCircles = [];
 
     var last_click = [0,0]
 
@@ -110,10 +111,10 @@ function main(){
             $("#count").text("Count: " + circles.length);
         }   
 
-        //reference circle:
+/*        //reference circle:
         c = new Circle(WIDTH/2, HEIGHT/2, 1, 1, 1)
         circles.push(c);
-
+*/
 
         $("#count").text("Count: " + circles.length);
 
@@ -131,6 +132,7 @@ function main(){
 
 
         clear();
+        visibleCircles = [];
         moveLoop();
 
         $("#x-pos").text(Math.round(left_offset,2));
@@ -139,8 +141,11 @@ function main(){
         for(i = 0; i < circles.length; i++){
 
             // only draw circles actually visible on screen!
-            if(!((circle.xPos - left_offset)<0 || (circle.xPos - left_offset)>WIDTH || (circle.yPos - top_offset) < 0 || (circle.yPos - top_offset) > HEIGHT)){
-                drawCircle(circles[i]);
+            if(!((circles[i].xPos + left_offset)<0 || (circles[i].xPos - circles[i].radius - left_offset)>WIDTH || (circles[i].yPos + circles[i].radius  - top_offset) < 0 || (circles[i].yPos - circles[i].radius - top_offset) > HEIGHT)){
+                visibleCircles.push(circles[i]);                        // keep track of which circles are visible
+                $("#visible").text(visibleCircles.length);
+                drawCircle(circles[i]);                                 // actually draw the circle
+
             }
         }
 
@@ -149,6 +154,7 @@ function main(){
     }
 
     function drawCircle(circle){
+
 
     /* LIGHT TWINKLE: */
 
@@ -163,19 +169,27 @@ function main(){
             d = Math.sqrt(Math.pow(((circle.xPos - left_offset) - last_click[0]), 2) + Math.pow(((circle.yPos - top_offset) - last_click[1]),2));
 
             if(d < circle.radius){
+
                 // then we have a collision!
                     console.log("Ya clicked on a circle, you goof!");
+
+                    for(var j = 0; j < circles.length; j++){
+                        if(circles[j].active){
+                            circles[j].active = false;
+                            circles[j].color = colors[Math.floor(randBetween(0,3))];
+                            circles[j].radius = RADIUS; 
+                        }
+                    }
+
+
                     last_click = [0,0]
-                    circle.radius = 25;
+                    circle.radius += 5;
                     circle.color = "green";
+                    circle.active = true;
+
+
                     // THIS IS WHERE THE MAGIC HAPPENS!
                     // if we click on a circle, we re-center around that cicle.
-
-                /*
-                    left_offset = (circle.xPos - WIDTH/2);
-                    top_offset = (circle.yPos - HEIGHT/2); 
-                */
-
                    
                     target_left_offset = (circle.xPos - WIDTH/2);
                     target_top_offset = (circle.yPos - HEIGHT/2);
@@ -184,38 +198,6 @@ function main(){
 
             }
         }
-
-        //
-
-
-        function animateMove(new_left_offset, new_top_offset){
-
-            console.log("animating!");
-
-            var animY = (new_top_offset - top_offset)/100;
-            var animX = (new_left_offset - left_offset)/100;
-            var counter = 0;
-
-
-            var moveIt = setInterval(function(){
-
-
-
-                top_offset += animY;
-                left_offset += animX;
-
-                counter++;
-
-                if(counter >= 100){
-                    console.log("moved!");
-                    clearInterval(moveIt);
-                }
-
-
-            }, 10)
-        }
-
-        //
 
         ctx.fillStyle = circle.color;
         
@@ -237,11 +219,36 @@ function main(){
             circle.dx *= randBetween(0.5, 1.5);
         }
         
-
-/*
-        circle.xPos += circle.dx;
-        circle.yPos += circle.dy;*/
     }
+
+
+    function animateMove(new_left_offset, new_top_offset){
+
+        console.log("animating!");
+
+        var animY = (new_top_offset - top_offset)/100;
+        var animX = (new_left_offset - left_offset)/100;
+        var counter = 0;
+
+
+        var moveIt = setInterval(function(){
+
+
+
+            top_offset += animY;
+            left_offset += animX;
+
+            counter++;
+
+            if(counter >= 100){
+                console.log("moved!");
+                clearInterval(moveIt);
+            }
+
+
+        }, 10)
+    }
+
 
     function Circle(x, y, radius, dx, dy){
         
@@ -316,12 +323,6 @@ function main(){
         clearInterval(timeout);
         return false;
     });
-
-
-
-//
-
-
 
     // listen to keyboard events:
 

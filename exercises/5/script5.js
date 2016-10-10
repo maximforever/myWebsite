@@ -11,8 +11,8 @@ function main(){
     var dy = randBetween(-SPEED, SPEED);
     var ctx;
     var MINRAD = 1;
-    var MAXRAD = 2;
-    var NUM_CIRCLES = 600;
+    var MAXRAD = 3;
+    var NUM_CIRCLES = 400;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -120,7 +120,7 @@ function main(){
         $("#y-pos").text(top_offset);
 
         for(i = 0; i < circles.length; i++){
-            if(!((circle.xPos - left_offset)<0 || (circle.xPos - left_offset)>WIDTH || (circle.yPos - top_offset) < 0 || (circle.yPos - top_offset) > HEIGHT)){
+            if(!((circles[i].xPos - left_offset)<0 || (circles[i].xPos - left_offset)>WIDTH || (circles[i].yPos - top_offset) < 0 || (circles[i].yPos - top_offset) > HEIGHT)){
                 drawCircle(circles[i]);
             }
         }
