@@ -141,7 +141,8 @@ function main(){
         for(i = 0; i < circles.length; i++){
 
             // only draw circles actually visible on screen!
-            if(!((circles[i].xPos + left_offset)<0 || (circles[i].xPos - circles[i].radius - left_offset)>WIDTH || (circles[i].yPos + circles[i].radius  - top_offset) < 0 || (circles[i].yPos - circles[i].radius - top_offset) > HEIGHT)){
+      
+            if(!((circles[i].xPos + circles[i].radius - left_offset) < 0 || (circles[i].xPos - circles[i].radius - left_offset) > WIDTH || (circles[i].yPos + circles[i].radius - top_offset) < 0 || (circles[i].yPos - circles[i].radius - top_offset) > HEIGHT)){  
                 visibleCircles.push(circles[i]);                        // keep track of which circles are visible
                 $("#visible").text(visibleCircles.length);
                 drawCircle(circles[i]);                                 // actually draw the circle
