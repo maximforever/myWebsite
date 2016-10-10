@@ -10,8 +10,8 @@ function main(){
     var dx = randBetween(-SPEED, SPEED);
     var dy = randBetween(-SPEED, SPEED);
     var ctx;
-    var RADIUS = 10;
-    var NUM_CIRCLES = 400;
+    var RADIUS = 20;
+    var NUM_CIRCLES = 50;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -26,11 +26,10 @@ function main(){
         dy = randBetween(-SPEED/5, SPEED/5);
         $("#status").append("<br>we're on mobile");
     }
-
+    var WIDTH = canvas.width();
+    var HEIGHT = canvas.height();    
     var x = WIDTH/2;
     var y = HEIGHT/2;
-    var WIDTH = canvas.width();
-    var HEIGHT = canvas.height();
     var circles = [];
 
     var last_click = [0,0]
@@ -111,6 +110,10 @@ function main(){
             $("#count").text("Count: " + circles.length);
         }   
 
+        //reference circle:
+        c = new Circle(WIDTH/2, HEIGHT/2, 1, 1, 1)
+        circles.push(c);
+
 
         $("#count").text("Count: " + circles.length);
 
@@ -130,8 +133,8 @@ function main(){
         clear();
         moveLoop();
 
-        $("#x-pos").text(left_offset);
-        $("#y-pos").text(top_offset);
+        $("#x-pos").text(Math.round(left_offset,2));
+        $("#y-pos").text(Math.round(top_offset,2));
 
         for(i = 0; i < circles.length; i++){
 
@@ -149,25 +152,70 @@ function main(){
 
     /* LIGHT TWINKLE: */
 
+
         if(randBetween(0, 30) > 29.99){
             circle.color = colors[Math.floor(randBetween(0,3))];
         }
 
 
         //create a circle at last click and test for collision:
+        if(!(last_click[0] == 0 && last_click[1] == 0)){
+            d = Math.sqrt(Math.pow(((circle.xPos - left_offset) - last_click[0]), 2) + Math.pow(((circle.yPos - top_offset) - last_click[1]),2));
 
-        d = Math.sqrt(Math.pow(((circle.xPos - left_offset) - last_click[0]), 2) + Math.pow(((circle.yPos - top_offset) - last_click[1]),2));
+            if(d < circle.radius){
+                // then we have a collision!
+                    console.log("Ya clicked on a circle, you goof!");
+                    last_click = [0,0]
+                    circle.radius = 25;
+                    circle.color = "green";
+                    // THIS IS WHERE THE MAGIC HAPPENS!
+                    // if we click on a circle, we re-center around that cicle.
 
-        if(d < circle.radius){
-            // then we have a collision!
-                console.log("Ya clicked on a circle, you goof!");
-                last_click = [0,0]
+                /*
+                    left_offset = (circle.xPos - WIDTH/2);
+                    top_offset = (circle.yPos - HEIGHT/2); 
+                */
 
-                // THIS IS WHERE THE MAGIC HAPPENS!
-                // if we click on a circle, we re-center around that cicle.
-                left_offset = (circle.xPos - WIDTH/2);
-                top_offset = (circle.yPos - HEIGHT/2);
+                   
+                    target_left_offset = (circle.xPos - WIDTH/2);
+                    target_top_offset = (circle.yPos - HEIGHT/2);
+
+                    animateMove(target_left_offset, target_top_offset);
+
+            }
         }
+
+        //
+
+
+        function animateMove(new_left_offset, new_top_offset){
+
+            console.log("animating!");
+
+            var animY = (new_top_offset - top_offset)/100;
+            var animX = (new_left_offset - left_offset)/100;
+            var counter = 0;
+
+
+            var moveIt = setInterval(function(){
+
+
+
+                top_offset += animY;
+                left_offset += animX;
+
+                counter++;
+
+                if(counter >= 100){
+                    console.log("moved!");
+                    clearInterval(moveIt);
+                }
+
+
+            }, 10)
+        }
+
+        //
 
         ctx.fillStyle = circle.color;
         
@@ -204,6 +252,7 @@ function main(){
         this.dx = dx;
         this.dy = dy;
         this.color = colors[Math.floor(randBetween(0,3))];
+        this.active = false;
     }
 
     function getDistance(a, b){
