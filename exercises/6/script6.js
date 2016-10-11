@@ -43,6 +43,7 @@ function main(){
 
     var idCounter = 0;
     var getFive = false;
+    var fiveClosestCircles = [];
     
     var animating = false;
 
@@ -275,16 +276,16 @@ function main(){
         //but we only want the top 5 closest circles
                 
             if(getFive){
-                tempArray = getFiveClosest(circle);
+                fiveClosestCircles = getFiveClosest(circle);
             }
             //=====================
 
             
-            for(var k = 0; k < tempArray.length; k++){
+            for(var k = 0; k < fiveClosestCircles.length; k++){
                 ctx.globalCompositeOperation = 'destination-over';
                 ctx.beginPath();
                 ctx.moveTo((circle.xPos-left_offset), (circle.yPos-top_offset));
-                ctx.lineTo((tempArray[k].xPos-left_offset), (tempArray[k].yPos-top_offset));
+                ctx.lineTo((fiveClosestCircles[k].xPos-left_offset), (fiveClosestCircles[k].yPos-top_offset));
                 ctx.stroke();
             }
 
