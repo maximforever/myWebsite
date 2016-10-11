@@ -32,14 +32,20 @@ function main(){
     var y = HEIGHT/2;
     var circles = [];
     var visibleCircles = [];
+    var LAST_ACTIVE = null;
+    var ACTIVE_CIRCLE = null;
 
     var last_click = [0,0]
 
     var left_offset = 0;
     var top_offset = 0; 
     var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
+
+    idCounter = 0;
     
     var animating = false;
+
+
 
 
     // EVENT LISTENERS:
@@ -110,6 +116,7 @@ function main(){
 
             circles.push(c);
             $("#count").text("Count: " + circles.length);
+            idCounter++;
         }   
 
 /*        //reference circle:
@@ -123,9 +130,7 @@ function main(){
         return setInterval(draw, 10)
     }
 
-    function makeCircle(){
-        
-        
+    function makeCircle(){ 
         c = new Circle(randBetween(RADIUS, MAP_WIDTH-RADIUS), randBetween(RADIUS, MAP_HEIGHT-RADIUS), RADIUS, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
         return c;
     }
@@ -152,6 +157,10 @@ function main(){
                 drawCircle(circles[i]);                                 // actually draw the circle
 
             }
+
+            if(!(ACTIVE_CIRCLE == null)){
+                drawConnectors(ACTIVE_CIRCLE);
+            }
         }
 
         
@@ -175,8 +184,12 @@ function main(){
 
             if(d < circle.radius){
 
+
+
                 // then we have a collision!
                     console.log("Ya clicked on a circle, you goof!");
+
+                    animating = true;
 
                     for(var j = 0; j < circles.length; j++){
                         if(circles[j].active){
@@ -192,6 +205,11 @@ function main(){
                     circle.color = "green";
                     circle.active = true;
 
+                    if(ACTIVE_CIRCLE){
+                        LAST_ACTIVE = ACTIVE_CIRCLE;
+                    }
+                    
+                    ACTIVE_CIRCLE = circle;
 
                     // THIS IS WHERE THE MAGIC HAPPENS!
                     // if we click on a circle, we re-center around that cicle.
@@ -203,25 +221,6 @@ function main(){
 
             }
         }
-
-
-        if(circle.active && !animating){
-            for(var k = 0; k < visibleCircles.length; k++){
-
-               //but we only want the top 5 closest circles
-
-                ctx.strokeStyle = "rgba(214,224,240,1)";
-                ctx.lineWidth = RADIUS/8;
-                ctx.globalCompositeOperation = 'destination-over';
-
-                ctx.beginPath();
-                ctx.moveTo((circle.xPos-left_offset), (circle.yPos-top_offset));
-                ctx.lineTo((visibleCircles[k].xPos-left_offset), (visibleCircles[k].yPos-top_offset));
-                ctx.stroke();
-            }
-            ctx.globalCompositeOperation = 'source-over';
-        }
-
 
         ctx.fillStyle = circle.color;
         
@@ -243,6 +242,48 @@ function main(){
             circle.dx *= randBetween(0.5, 1.5);
         }
         
+    }
+
+    function drawConnectors(circle) {
+
+        ctx.strokeStyle = "rgba(214,224,240,1)";
+        ctx.lineWidth = 2;
+        ctx.globalCompositeOperation = 'destination-over';
+        
+
+        //leave the guiding line present if there's a last active circle:
+
+        if(LAST_ACTIVE){
+
+
+            ctx.globalCompositeOperation = 'destination-over';
+
+
+            ctx.beginPath();
+            ctx.moveTo((LAST_ACTIVE.xPos-left_offset), (LAST_ACTIVE.yPos-top_offset));
+            ctx.lineTo((ACTIVE_CIRCLE.xPos-left_offset), (ACTIVE_CIRCLE.yPos-top_offset));
+            ctx.stroke();
+
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+
+        if(animating == false){
+            for(var k = 0; k < visibleCircles.length; k++){
+
+               //but we only want the top 5 closest circles
+
+                ctx.globalCompositeOperation = 'destination-over';
+
+                var tempArray = visibleCircles;
+
+                ctx.beginPath();
+                ctx.moveTo((circle.xPos-left_offset), (circle.yPos-top_offset));
+                ctx.lineTo((visibleCircles[k].xPos-left_offset), (visibleCircles[k].yPos-top_offset));
+                ctx.stroke();
+            }
+            ctx.globalCompositeOperation = 'source-over';
+        }
     }
 
 
@@ -277,7 +318,7 @@ function main(){
     }
 
 
-    function Circle(x, y, radius, dx, dy){
+    function Circle(x, y, radius, dx, dy, id){
         
 
         this.xPos = x;
@@ -287,6 +328,7 @@ function main(){
         this.dy = dy;
         this.color = colors[Math.floor(randBetween(0,3))];
         this.active = false;
+        this.id = idCounter;
     }
 
     function getDistance(a, b){
@@ -446,5 +488,6 @@ function main(){
     function randBetween(min, max){
         return Math.random() * (max - min) + min;
     }
+
 
 }
