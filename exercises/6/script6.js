@@ -41,7 +41,8 @@ function main(){
     var top_offset = 0; 
     var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
 
-    idCounter = 0;
+    var idCounter = 0;
+    var getFive = false;
     
     var animating = false;
 
@@ -190,6 +191,7 @@ function main(){
                     console.log("Ya clicked on a circle, you goof!");
 
                     animating = true;
+                    getFive = true;
 
                     for(var j = 0; j < circles.length; j++){
                         if(circles[j].active){
@@ -268,20 +270,24 @@ function main(){
         }
 
 
+
         if(animating == false){
-            for(var k = 0; k < visibleCircles.length; k++){
+        //but we only want the top 5 closest circles
+                
+            if(getFive){
+                tempArray = getFiveClosest(circle);
+            }
+            //=====================
 
-               //but we only want the top 5 closest circles
-
+            
+            for(var k = 0; k < tempArray.length; k++){
                 ctx.globalCompositeOperation = 'destination-over';
-
-                var tempArray = visibleCircles;
-
                 ctx.beginPath();
                 ctx.moveTo((circle.xPos-left_offset), (circle.yPos-top_offset));
-                ctx.lineTo((visibleCircles[k].xPos-left_offset), (visibleCircles[k].yPos-top_offset));
+                ctx.lineTo((tempArray[k].xPos-left_offset), (tempArray[k].yPos-top_offset));
                 ctx.stroke();
             }
+
             ctx.globalCompositeOperation = 'source-over';
         }
     }
@@ -329,6 +335,48 @@ function main(){
         this.color = colors[Math.floor(randBetween(0,3))];
         this.active = false;
         this.id = idCounter;
+    }
+
+
+    function getFiveClosest(circle){
+
+        var tempArray = circles.slice();
+        var fiveArray = [];
+
+        //first, we run this 5 times
+        for(var a = 0; a < 5; a++){
+
+            console.log("running for time " + a)
+
+            var minVal = 9999;
+            var minID = -1;
+            
+
+            // cycle through our temp array
+            for(var b = 0; b < tempArray.length; b++){
+                console.log("running B");
+
+                var d = getDistance(tempArray[b], circle);
+
+                if (d < minVal && tempArray[b].id != circle.id){
+                    minVal = d;
+                    minID = tempArray[b].id;
+                }
+            }
+
+            for(var c = 0; c < tempArray.length; c++){
+                if (tempArray[c].id == minID){
+                    fiveArray.push(tempArray[c]);
+                    tempArray.splice(c, 1);
+                    console.log("REMOVED ID: " + minID);
+                }
+            } 
+            // console.log("Temp array: " + tempArray);   
+        }
+
+        getFive = false;
+        console.log(fiveArray.length)
+        return fiveArray;
     }
 
     function getDistance(a, b){
