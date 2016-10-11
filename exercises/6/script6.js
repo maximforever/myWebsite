@@ -11,7 +11,7 @@ function main(){
     var dy = randBetween(-SPEED, SPEED);
     var ctx;
     var RADIUS = 30;
-    var NUM_CIRCLES = 20;
+    var NUM_CIRCLES = 40;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -39,6 +39,7 @@ function main(){
     var top_offset = 0; 
     var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
     
+    var animating = false;
 
 
     // EVENT LISTENERS:
@@ -118,6 +119,7 @@ function main(){
 
         $("#count").text("Count: " + circles.length);
 
+
         return setInterval(draw, 10)
     }
 
@@ -129,6 +131,8 @@ function main(){
     }
 
     function draw(){
+
+        $("#animating").text(animating);
 
 
         clear();
@@ -160,7 +164,7 @@ function main(){
     /* LIGHT TWINKLE: */
 
 
-        if(randBetween(0, 30) > 29.99){
+        if(randBetween(0, 30) > 29.99 && !circle.active){
             circle.color = colors[Math.floor(randBetween(0,3))];
         }
 
@@ -200,6 +204,25 @@ function main(){
             }
         }
 
+
+        if(circle.active && !animating){
+            for(var k = 0; k < visibleCircles.length; k++){
+
+               //but we only want the top 5 closest circles
+
+                ctx.strokeStyle = "rgba(214,224,240,1)";
+                ctx.lineWidth = RADIUS/8;
+                ctx.globalCompositeOperation = 'destination-over';
+
+                ctx.beginPath();
+                ctx.moveTo((circle.xPos-left_offset), (circle.yPos-top_offset));
+                ctx.lineTo((visibleCircles[k].xPos-left_offset), (visibleCircles[k].yPos-top_offset));
+                ctx.stroke();
+            }
+            ctx.globalCompositeOperation = 'source-over';
+        }
+
+
         ctx.fillStyle = circle.color;
         
         // ctx.stokeStyle = "rgba(178, 181, 148, 1)";
@@ -234,7 +257,7 @@ function main(){
 
         var moveIt = setInterval(function(){
 
-
+            animating = true;
 
             top_offset += animY;
             left_offset += animX;
@@ -243,11 +266,14 @@ function main(){
 
             if(counter >= 100){
                 console.log("moved!");
+                animating = false;
                 clearInterval(moveIt);
             }
 
 
         }, 10)
+
+        
     }
 
 
