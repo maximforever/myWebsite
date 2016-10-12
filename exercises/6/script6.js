@@ -6,12 +6,9 @@ function main(){
     $("#status").append("ready to go!");
 
     var canvas = $("#canvas");
-    var SPEED = 3;
-    var dx = randBetween(-SPEED, SPEED);
-    var dy = randBetween(-SPEED, SPEED);
     var ctx;
-    var RADIUS = 30;
-    var NUM_CIRCLES = 40;
+    var RADIUS = 25;
+    var NUM_CIRCLES = 50;
 
     var MAP_HEIGHT = 800;
     var MAP_WIDTH = 1400;
@@ -22,8 +19,6 @@ function main(){
         canvas.attr('width', window.innerWidth);
         canvas.attr('height', window.innerHeight);
         NUM_CIRCLES = 1000;
-        dx = randBetween(-SPEED/5, SPEED/5);
-        dy = randBetween(-SPEED/5, SPEED/5);
         $("#status").append("<br>we're on mobile");
     }
     var WIDTH = canvas.width();
@@ -41,7 +36,7 @@ function main(){
     var top_offset = 0; 
     var colors = ["#FFEABC", "#D4C3FF", "#FF5050", "#50FFDD"];
 
-    var idCounter = 0;
+    var idCounter = 1;
     var getFive = false;
     var fiveClosestCircles = [];
     
@@ -95,6 +90,7 @@ function main(){
 
         var placed;
 
+
         // This is the bit that makes cicles:
 
         for(i = 0; i < NUM_CIRCLES; i++){
@@ -121,10 +117,6 @@ function main(){
             idCounter++;
         }   
 
-/*        //reference circle:
-        c = new Circle(WIDTH/2, HEIGHT/2, 1, 1, 1)
-        circles.push(c);
-*/
 
         $("#count").text("Count: " + circles.length);
 
@@ -133,7 +125,7 @@ function main(){
     }
 
     function makeCircle(){ 
-        c = new Circle(randBetween(RADIUS, MAP_WIDTH-RADIUS), randBetween(RADIUS, MAP_HEIGHT-RADIUS), RADIUS, randBetween(-SPEED, SPEED), randBetween(-SPEED, SPEED));
+        c = new Circle(randBetween(RADIUS, MAP_WIDTH-RADIUS), randBetween(RADIUS, MAP_HEIGHT-RADIUS), RADIUS);
         return c;
     }
 
@@ -141,9 +133,8 @@ function main(){
 
         $("#animating").text(animating);
 
-
-        clear();
         visibleCircles = [];
+        clear();
         moveLoop();
 
         $("#x-pos").text(Math.round(left_offset,2));
@@ -155,7 +146,7 @@ function main(){
       
             if(!((circles[i].xPos + circles[i].radius - left_offset) < 0 || (circles[i].xPos - circles[i].radius - left_offset) > WIDTH || (circles[i].yPos + circles[i].radius - top_offset) < 0 || (circles[i].yPos - circles[i].radius - top_offset) > HEIGHT)){  
                 visibleCircles.push(circles[i]);                        // keep track of which circles are visible
-                $("#visible").text(visibleCircles.length);
+                $("#visible").text(visibleCircles.length);              // update the screen counter
                 drawCircle(circles[i]);                                 // actually draw the circle
 
             }
@@ -172,23 +163,27 @@ function main(){
     function drawCircle(circle){
 
 
-    /* LIGHT TWINKLE: */
+        if(circle.relevant || circle.active || ACTIVE_CIRCLE == null){
+            ctx.globalAlpha = 1;
+        } else {
+            ctx.globalAlpha = 0.2
+        }
 
-
-        if(randBetween(0, 30) > 29.99 && !circle.active){
-            circle.color = colors[Math.floor(randBetween(0,3))];
+        if(circle.id == 0){
+            console.log("getting!")
+            getFiveClosest(circle);
         }
 
 
         //create a circle at last click and test for collision:
-        if(!(last_click[0] == 0 && last_click[1] == 0)){
+        if(!(last_click[0] == 0 && last_click[1] == 0) && !animating){
             d = Math.sqrt(Math.pow(((circle.xPos - left_offset) - last_click[0]), 2) + Math.pow(((circle.yPos - top_offset) - last_click[1]),2));
 
-            if(d < circle.radius){
-
-
-
-                // then we have a collision!
+            // if the distance between the two is smaller than the circle's radius, then we have a collision!
+            
+            if(circle.relevant || ACTIVE_CIRCLE == null){
+                if((d < circle.radius)){
+                
                     console.log("Ya clicked on a circle, you goof!");
 
                     animating = true;
@@ -222,28 +217,52 @@ function main(){
 
                     animateMove(target_left_offset, target_top_offset);
 
+                }
             }
         }
 
+
+        // ACTUALLY DRAW THE CIRCLE ON THE CANVAS!
+
         ctx.fillStyle = circle.color;
-        
-        // ctx.stokeStyle = "rgba(178, 181, 148, 1)";
         
         ctx.beginPath();
         ctx.arc(circle.xPos - left_offset, circle.yPos - top_offset, circle.radius, 0, Math.PI*2, true);         // start at 0, end at Math.PI*2
         ctx.closePath();
         ctx.fill();
+
         // ctx.stroke();
 
-        if ((circle.xPos + dx) > (WIDTH - circle.radius) || (circle.xPos + circle.dx) <= circle.radius){
-            circle.dx = -circle.dx;
-            circle.dy *= randBetween(0.5, 1.5);
-        }
+        
+    }
 
-        if((circle.yPos + dy) > (HEIGHT-circle.radius) || (circle.yPos + circle.dy) <= circle.radius){
-            circle.dy = -circle.dy;
-            circle.dx *= randBetween(0.5, 1.5);
-        }
+    function animateMove(new_left_offset, new_top_offset){
+
+        console.log("animating!");
+
+        var animY = (new_top_offset - top_offset)/100;
+        var animX = (new_left_offset - left_offset)/100;
+        var counter = 0;
+
+
+        var moveIt = setInterval(function(){
+
+            animating = true;
+
+            top_offset += animY;
+            left_offset += animX;
+
+            counter++;
+
+            if(counter >= 100){
+                console.log("moved!");
+                animating = false;
+                clearInterval(moveIt);
+            }
+
+
+        }, 10)
+
         
     }
 
@@ -293,55 +312,33 @@ function main(){
         }
     }
 
-
-    function animateMove(new_left_offset, new_top_offset){
-
-        console.log("animating!");
-
-        var animY = (new_top_offset - top_offset)/100;
-        var animX = (new_left_offset - left_offset)/100;
-        var counter = 0;
-
-
-        var moveIt = setInterval(function(){
-
-            animating = true;
-
-            top_offset += animY;
-            left_offset += animX;
-
-            counter++;
-
-            if(counter >= 100){
-                console.log("moved!");
-                animating = false;
-                clearInterval(moveIt);
-            }
-
-
-        }, 10)
-
+    function Circle(x, y, radius){
         
-    }
-
-
-    function Circle(x, y, radius, dx, dy, id){
-        
-
         this.xPos = x;
         this.yPos = y;
         this.radius = radius;
-        this.dx = dx;
-        this.dy = dy;
         this.color = colors[Math.floor(randBetween(0,3))];
         this.active = false;
+        this.relevant = false;
         this.id = idCounter;
     }
 
 
     function getFiveClosest(circle){
 
-        var tempArray = circles.slice();
+
+        visibleCircles = [];
+
+        // get only the visible circles
+
+        for(var i = 0; i < circles.length; i++){
+            if(!((circles[i].xPos + circles[i].radius - left_offset) < 0 || (circles[i].xPos - circles[i].radius - left_offset) > WIDTH || (circles[i].yPos + circles[i].radius - top_offset) < 0 || (circles[i].yPos - circles[i].radius - top_offset) > HEIGHT)){  
+                visibleCircles.push(circles[i]);                        // keep track of which circles are visible
+                $("#visible").text(visibleCircles.length);              // update the screen counter
+            }
+        }
+
+        var tempArray = visibleCircles.slice();
         var fiveArray = [];
 
         //first, we run this 5 times
@@ -366,7 +363,13 @@ function main(){
             }
 
             for(var c = 0; c < tempArray.length; c++){
+                
+                if(!(tempArray[c].id == circle.id)){
+                    tempArray[c].relevant = false;
+                }
+
                 if (tempArray[c].id == minID){
+                    tempArray[c].relevant = true;
                     fiveArray.push(tempArray[c]);
                     tempArray.splice(c, 1);
                     console.log("REMOVED ID: " + minID);
