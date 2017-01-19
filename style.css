@@ -4,7 +4,15 @@ body {
 }
 
 a:hover {
-    text-decoration: none;ß
+    text-decoration: none;
+}
+
+a:visited {
+    text-decoration: none;
+}
+
+a:active {
+    text-decoration: none;
 }
 
 #landing {
@@ -219,6 +227,14 @@ a:hover {
 
 #project-4{
     background: url("assets/images/exercises.jpg") no-repeat center center; 
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+}
+
+#project-5{
+    background: url("assets/images/heartheirside.jpg") no-repeat center center; 
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
